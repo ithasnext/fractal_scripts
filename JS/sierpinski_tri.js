@@ -31,23 +31,22 @@ Sierp.prototype.midBase = function() {
 }
 
 Sierp.prototype.display = function() {
-  console.log(this);
   var line = new createjs.Shape();
   line.graphics.beginStroke(this.color).setStrokeStyle(1);
   line.graphics.moveTo(this.left[0], this.left[1]);
-  // line.graphics.lineTo(this.left[0], this.left[1]);
   line.graphics.lineTo(this.top[0], this.top[1]);
   line.graphics.lineTo(this.right[0], this.right[1]);
   line.graphics.lineTo(this.left[0], this.left[1]);
   stage.addChild(line);
 
-  stage.update();
 }
 
 function draw(lines) {
   lines.forEach(function(line) {
     line.display();
   })
+
+  stage.update();
 }
 
 function generate(lines) {
@@ -73,7 +72,7 @@ function generate(lines) {
 function setup() {
   var it = parseInt(document.getElementById("iterations").value);
   var lines = [];
-
+  init();
   var start = [0,canvas.height];
   var end = [canvas.width, canvas.height];
 
@@ -89,40 +88,12 @@ function setup() {
   draw(lines);
 }
 
-
-
 function init() {
   canvas = document.getElementById("canvas");
   stage = new createjs.Stage(canvas);
   var rect = new createjs.Shape();
   rect.graphics.beginFill("black").drawRect(0,0,canvas.width, canvas.height);
-  // line.graphics.moveTo(0,0);
-  // line.graphics.setStrokeStyle(4).beginStroke("black");
-  // line.graphics.lineTo(10,10);
-  // line.graphics.lineTo(10,100);
 
   stage.addChild(rect);
   stage.update();
-}
-
-function demo() {
-
-  stage = new createjs.Stage("canvas");
-  var line = new createjs.Shape();
-  line.graphics.moveTo(0,0);
-  line.graphics.setStrokeStyle(4).beginStroke("black").lineTo(10,10);
-  stage.addChild(line);
-
-
-   var line = new createjs.Shape();
-   line.graphics.moveTo(220,60).beginStroke("#00ff00").setStrokeStyle(10).lineTo(300,60);
-   stage.addChild(line);
-
-  // var circle = new createjs.Shape();
-  // circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
-  // circle.x = 100;
-  // circle.y = 100;
-  // stage.addChild(circle);
-  stage.update();
-
 }

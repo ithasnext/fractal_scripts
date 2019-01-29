@@ -1,6 +1,7 @@
 var RAD_ANGLE = 60 * Math.PI / 180;
 var canvas;
 var stage;
+var alDrawn = false;
 
 function Sierp(a,b,c, color) {
   this.left = a;
@@ -49,7 +50,7 @@ function draw(lines) {
   stage.update();
 }
 
-function generate(lines) {
+function generate(lines, color) {
   var next = [];
 
   lines.forEach(function(line) {
@@ -60,9 +61,12 @@ function generate(lines) {
     var e = line.midRight();
     var f = line.midBase();
 
-    next.push(new Sierp(a,d,f,"#42f489"))
-    next.push(new Sierp(d,b,e,"#42f489"))
-    next.push(new Sierp(f,e,c,"#42f489"))
+    var lc = color[Math.floor(Math.random()*color.length)];
+    next.push(new Sierp(a,d,f,"#"+lc));
+    lc = color[Math.floor(Math.random()*color.length)];
+    next.push(new Sierp(d,b,e,"#"+lc))
+    lc = color[Math.floor(Math.random()*color.length)];
+    next.push(new Sierp(f,e,c,"#"+lc))
     // var sierp = new Sierp(d,f,e,"#42f489").display();
   })
 
@@ -71,6 +75,19 @@ function generate(lines) {
 
 function setup() {
   var it = parseInt(document.getElementById("iterations").value);
+  var color = document.getElementById("validColors").value.replace(/ /g,'');
+
+  (color == "" ? color = "42f489" : color);
+  if (color.includes(",")) {
+    var colorArray = color.split(",");
+    while(colorArray.includes("")) {
+      colorArray[colorArray.indexOf("")] = "42f489";
+    }
+    color = colorArray;
+  } else {
+    color = [color];
+  }
+
   var lines = [];
   init();
   var start = [0,canvas.height];
@@ -82,10 +99,11 @@ function setup() {
   lines.push(new Sierp(start, [x,y], end, "black"));
 
   for (var i = 0; i < it; i++) {
-    var temp = generate(lines);
+    var temp = generate(lines,color);
     lines = temp;
   }
   draw(lines);
+  alDrawn = true;
 }
 
 function init() {
@@ -97,3 +115,11 @@ function init() {
   stage.addChild(rect);
   stage.update();
 }
+
+function regen() {
+  if (document.getElementById("iterations") != null && document.getElementById("iterations").value != "" && alDrawn) {
+    setup();
+  }
+}
+
+setInterval(regen,100);

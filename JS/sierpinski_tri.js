@@ -31,20 +31,19 @@ Sierp.prototype.midBase = function() {
   return [this.left[0]+length, this.left[1]];
 }
 
-Sierp.prototype.display = function() {
-  var line = new createjs.Shape();
+Sierp.prototype.display = function(line) {
   line.graphics.beginStroke(this.color).setStrokeStyle(1);
   line.graphics.moveTo(this.left[0], this.left[1]);
   line.graphics.lineTo(this.top[0], this.top[1]);
   line.graphics.lineTo(this.right[0], this.right[1]);
   line.graphics.lineTo(this.left[0], this.left[1]);
   stage.addChild(line);
-
 }
 
 function draw(lines) {
+  var l = new createjs.Shape();
   lines.forEach(function(line) {
-    line.display();
+    line.display(l);
   })
 
   stage.update();
@@ -111,15 +110,18 @@ function init() {
   stage = new createjs.Stage(canvas);
   var rect = new createjs.Shape();
   rect.graphics.beginFill("black").drawRect(0,0,canvas.width, canvas.height);
+  stage.mouseEnabled = false;
 
   stage.addChild(rect);
-  stage.update();
 }
 
 function regen() {
-  if (document.getElementById("iterations") != null && document.getElementById("iterations").value != "" && alDrawn) {
+  if (document.getElementById("iterations") != null && document.getElementById("iterations").value != "" &&
+      alDrawn && document.getElementById("validColors").value.includes(",") && document.getElementById("regen").checked) {
+    stage.removeAllChildren();
     setup();
   }
 }
 
 setInterval(regen,100);
+// d30c16,ed7504,040bed,

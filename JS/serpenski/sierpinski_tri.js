@@ -13,7 +13,7 @@ function Sierp(a,b,c, color) {
 Sierp.prototype.genarate = function() {}
 
 Sierp.prototype.midLeft = function() {
-  var end = this.midBase();
+  // var end = this.midBase();
 
   var x = this.left[0] + .5*(end[0]-this.left[0]) + (end[1]-this.left[1])*Math.sin(RAD_ANGLE);
   var y = this.left[1]+ .5*(end[1]-this.left[1]) - (end[0]-this.left[0])*Math.sin(RAD_ANGLE);
